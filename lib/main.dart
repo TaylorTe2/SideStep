@@ -70,12 +70,16 @@ class _MyAppState extends State<MyApp> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(50.0),
+            padding: const EdgeInsets.fromLTRB(25.0, 0, 0, 50.0),
             child: Container(
               alignment: Alignment.bottomLeft,
               child: FloatingActionButton(
                 backgroundColor: Colors.orange,
                 onPressed: _buttonPressSettings,
+                child: const Icon(
+                  Icons.settings,
+                  size: 40,
+                ),
               ),
             ),
           ),
