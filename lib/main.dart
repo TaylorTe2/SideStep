@@ -20,9 +20,13 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   late GoogleMapController mapController;
 
+//default starting position on map when the app is run. We should change this to device location in the future.
   final LatLng _center = const LatLng(-27.4705, 153.0260);
+
+  //places Markers in list I don't actually know why this has to be an array but it makes it work.
   List<Marker> myMarker = [];
 
+// Creates a Google map controller called controller and uses it as the map controller when the map is created.
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
   }
@@ -44,12 +48,12 @@ class _MyAppState extends State<MyApp> {
               myLocationButtonEnabled: true,
               compassEnabled: true,
               onTap: _handleTap,
-              zoomControlsEnabled: true,
+              zoomControlsEnabled: false,
               zoomGesturesEnabled: true,
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 35.0),
+            padding: const EdgeInsets.only(top: 50.0, left: 10, right: 10),
             child: Material(
               child: Container(
                 height: 30,
@@ -70,6 +74,7 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
+// function that will add a marker at the position of the tappedPoint to myMarker[]
   _handleTap(LatLng tappedPoint) {
     setState(() {
       myMarker = [];
