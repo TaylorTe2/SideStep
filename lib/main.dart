@@ -69,6 +69,16 @@ class _MyAppState extends State<MyApp> {
               ),
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.all(50.0),
+            child: Container(
+              alignment: Alignment.bottomLeft,
+              child: FloatingActionButton(
+                backgroundColor: Colors.orange,
+                onPressed: _buttonPressSettings,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -86,4 +96,7 @@ class _MyAppState extends State<MyApp> {
       );
     });
   }
+
+// this function will determine what the button in the bottom left does.
+  void _buttonPressSettings() {}
 }
