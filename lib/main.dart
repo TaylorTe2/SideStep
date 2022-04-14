@@ -21,6 +21,7 @@ class _MyAppState extends State<MyApp> {
   late GoogleMapController mapController;
 
   final LatLng _center = const LatLng(-27.4705, 153.0260);
+  List<Marker> myMarker = [];
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
@@ -34,6 +35,7 @@ class _MyAppState extends State<MyApp> {
         children: [
           Container(
             child: GoogleMap(
+              markers: Set.from(myMarker),
               onMapCreated: _onMapCreated,
               initialCameraPosition: CameraPosition(
                 target: _center,
@@ -41,6 +43,9 @@ class _MyAppState extends State<MyApp> {
               ),
               myLocationButtonEnabled: true,
               compassEnabled: true,
+              onTap: _handleTap,
+              zoomControlsEnabled: true,
+              zoomGesturesEnabled: true,
             ),
           ),
           Padding(
@@ -63,5 +68,17 @@ class _MyAppState extends State<MyApp> {
         ],
       ),
     );
+  }
+
+  _handleTap(LatLng tappedPoint) {
+    setState(() {
+      myMarker = [];
+      myMarker.add(
+        Marker(
+          markerId: MarkerId(tappedPoint.toString()),
+          position: tappedPoint,
+        ),
+      );
+    });
   }
 }
