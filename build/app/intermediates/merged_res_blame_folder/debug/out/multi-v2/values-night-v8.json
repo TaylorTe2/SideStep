@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\Taylor\\Uni\\RMIT\\Building IT Systems\\Assignment 2\\SideStep\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-night-v8\\values-night-v8.xml",
+            "outputFile": "C:\\Users\\USER\\Desktop\\Uni\\Building IT Systems\\Assessment 2\\SideStep-1\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-night-v8\\values-night-v8.xml",
             "map": [
                 {
-                    "source": "D:\\Taylor\\Uni\\RMIT\\Building IT Systems\\Assignment 2\\SideStep\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "source": "C:\\Users\\USER\\Desktop\\Uni\\Building IT Systems\\Assessment 2\\SideStep-1\\android\\app\\src\\main\\res\\values-night\\styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",

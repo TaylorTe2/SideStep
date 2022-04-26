@@ -16,3 +16,5 @@ import GoogleMaps  // Add this import
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>This app needs access to location when open.</string>

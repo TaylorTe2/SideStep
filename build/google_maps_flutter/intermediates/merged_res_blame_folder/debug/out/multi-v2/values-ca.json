@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\Taylor\\Uni\\RMIT\\Building IT Systems\\Assignment 2\\SideStep\\build\\google_maps_flutter\\intermediates\\res\\merged\\debug\\values-ca\\values-ca.xml",
+            "outputFile": "C:\\Users\\USER\\Desktop\\Uni\\Building IT Systems\\Assessment 2\\SideStep-1\\build\\google_maps_flutter\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-ca\\values-ca.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\New\\.gradle\\caches\\transforms-2\\files-2.1\\3679fa9be1d67d14c72169d3353f14d4\\jetified-play-services-base-17.0.0\\res\\values-ca\\values.xml",
+                    "source": "C:\\Users\\USER\\.gradle\\caches\\transforms-2\\files-2.1\\3679fa9be1d67d14c72169d3353f14d4\\jetified-play-services-base-17.0.0\\res\\values-ca\\values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
                         "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\New\\.gradle\\caches\\transforms-2\\files-2.1\\122df2e57d294d1a53db26bbc3b813c1\\core-1.6.0\\res\\values-ca\\values-ca.xml",
+                    "source": "C:\\Users\\USER\\.gradle\\caches\\transforms-2\\files-2.1\\122df2e57d294d1a53db26bbc3b813c1\\core-1.6.0\\res\\values-ca\\values-ca.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -38,7 +38,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\New\\.gradle\\caches\\transforms-2\\files-2.1\\a7975ba3cb0c3630bd14453686890431\\jetified-play-services-basement-17.0.0\\res\\values-ca\\values.xml",
+                    "source": "C:\\Users\\USER\\.gradle\\caches\\transforms-2\\files-2.1\\a7975ba3cb0c3630bd14453686890431\\jetified-play-services-basement-17.0.0\\res\\values-ca\\values.xml",
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",
@@ -57,10 +57,10 @@
             ]
         },
         {
-            "outputFile": "D:\\Taylor\\Uni\\RMIT\\Building IT Systems\\Assignment 2\\SideStep\\build\\google_maps_flutter\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-ca\\values-ca.xml",
+            "outputFile": "C:\\Users\\USER\\Desktop\\Uni\\Building IT Systems\\Assessment 2\\SideStep-1\\build\\google_maps_flutter\\intermediates\\res\\merged\\debug\\values-ca\\values-ca.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\New\\.gradle\\caches\\transforms-2\\files-2.1\\3679fa9be1d67d14c72169d3353f14d4\\jetified-play-services-base-17.0.0\\res\\values-ca\\values.xml",
+                    "source": "C:\\Users\\USER\\.gradle\\caches\\transforms-2\\files-2.1\\3679fa9be1d67d14c72169d3353f14d4\\jetified-play-services-base-17.0.0\\res\\values-ca\\values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
                         "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
@@ -77,7 +77,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\New\\.gradle\\caches\\transforms-2\\files-2.1\\122df2e57d294d1a53db26bbc3b813c1\\core-1.6.0\\res\\values-ca\\values-ca.xml",
+                    "source": "C:\\Users\\USER\\.gradle\\caches\\transforms-2\\files-2.1\\122df2e57d294d1a53db26bbc3b813c1\\core-1.6.0\\res\\values-ca\\values-ca.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -94,7 +94,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\New\\.gradle\\caches\\transforms-2\\files-2.1\\a7975ba3cb0c3630bd14453686890431\\jetified-play-services-basement-17.0.0\\res\\values-ca\\values.xml",
+                    "source": "C:\\Users\\USER\\.gradle\\caches\\transforms-2\\files-2.1\\a7975ba3cb0c3630bd14453686890431\\jetified-play-services-basement-17.0.0\\res\\values-ca\\values.xml",
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",

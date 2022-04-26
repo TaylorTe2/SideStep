@@ -1,12 +1,10 @@
-import 'dart:ffi';
-import 'dart:ui';
-
-import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'dart:math' show cos, sqrt, asin;
 
 void main() => runApp(const MyApp());
 
@@ -31,6 +29,19 @@ class _MyAppState extends State<MyApp> {
     mapController = controller;
   }
 
+// function that will add a marker at the position of the tappedPoint to myMarker[]
+  _handleTap(LatLng tappedPoint) async {
+    setState(() {
+      myMarker = [];
+      myMarker.add(
+        Marker(
+          markerId: MarkerId(tappedPoint.toString()),
+          position: tappedPoint,
+        ),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -45,7 +56,8 @@ class _MyAppState extends State<MyApp> {
                 target: _center,
                 zoom: 11.0,
               ),
-              myLocationButtonEnabled: true,
+              myLocationEnabled: true,
+              myLocationButtonEnabled: false,
               compassEnabled: true,
               onTap: _handleTap,
               zoomControlsEnabled: false,
@@ -86,19 +98,6 @@ class _MyAppState extends State<MyApp> {
         ],
       ),
     );
-  }
-
-// function that will add a marker at the position of the tappedPoint to myMarker[]
-  _handleTap(LatLng tappedPoint) {
-    setState(() {
-      myMarker = [];
-      myMarker.add(
-        Marker(
-          markerId: MarkerId(tappedPoint.toString()),
-          position: tappedPoint,
-        ),
-      );
-    });
   }
 
 // this function will determine what the button in the bottom left does.
