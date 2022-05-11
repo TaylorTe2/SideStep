@@ -3,25 +3,31 @@ import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
 
-List<List<dynamic>> vehicles = [];
-
-
-
-class LoadVehicles extends StatelessWidget {
+class LoadVehicles extends StatefulWidget {
   const LoadVehicles({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-
-  List<List<dynamic>> vehicles = [];
-
-  _loadVehicleCSV() async {
-  final myVehicles = await rootBundle.loadString('VehicleInfo.csv');
-  List<List<dynamic>> csvTable = CsvToListConverter().convert(myVehicles);
-
-  vehicles = csvTable;
+  State<LoadVehicles> createState() => _LoadVehiclesState();
 }
 
+class _LoadVehiclesState extends State<LoadVehicles> {
+  List<List<dynamic>> vehicles = [];
+
+  void loadVehicleCSV() async {
+    final myVehicles = await rootBundle.loadString('VehicleInfo.csv');
+    List<List<dynamic>> csvTable = CsvToListConverter().convert(myVehicles);
+
+    vehicles = csvTable;
+  }
+
+  @override
+  void initState() {
+    loadVehicleCSV();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Center(
       child: Container(
         decoration: BoxDecoration(color: Colors.white),
@@ -82,8 +88,4 @@ class LoadVehicles extends StatelessWidget {
       ),
     );
   }
-}
-
-_loadVehicles() async {
-  for (int i = 0; i < vehicles.length; i++) {}
 }
