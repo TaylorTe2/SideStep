@@ -76,25 +76,16 @@ file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/geolocator_windows
 file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/geolocator_windows-0.1.0/lib/
 google_maps_flutter
 2.14
-<<<<<<< HEAD
-file:///C:/Users/USER/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/google_maps_flutter-2.1.4/
-file:///C:/Users/USER/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/google_maps_flutter-2.1.4/lib/
-google_maps_flutter_platform_interface
-2.12
-file:///C:/Users/USER/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/google_maps_flutter_platform_interface-2.1.5/
-file:///C:/Users/USER/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/google_maps_flutter_platform_interface-2.1.5/lib/
-google_maps_webservice
-1.20
-file:///C:/Users/USER/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/google_maps_webservice-0.0.19/
-file:///C:/Users/USER/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/google_maps_webservice-0.0.19/lib/
-=======
-file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/google_maps_flutter-2.1.3/
-file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/google_maps_flutter-2.1.3/lib/
+file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/google_maps_flutter-2.1.4/
+file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/google_maps_flutter-2.1.4/lib/
 google_maps_flutter_platform_interface
 2.12
 file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/google_maps_flutter_platform_interface-2.1.5/
 file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/google_maps_flutter_platform_interface-2.1.5/lib/
->>>>>>> 381e2abaa3dd19be69b1c94f9699b8612bde82e1
+google_maps_webservice
+1.20
+file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/google_maps_webservice-0.0.19/
+file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/google_maps_webservice-0.0.19/lib/
 http
 2.14
 file:///C:/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/http-0.13.4/
