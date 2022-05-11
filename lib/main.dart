@@ -1,16 +1,7 @@
-<<<<<<< HEAD
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-=======
-import 'dart:ui';
 import 'UserSettings.dart';
-
-import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-
-import 'dart:math' show cos, sqrt, asin;
->>>>>>> 381e2abaa3dd19be69b1c94f9699b8612bde82e1
 
 void main() => runApp(const MyApp());
 
