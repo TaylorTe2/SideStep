@@ -14,10 +14,11 @@ class _LoadVehiclesState extends State<LoadVehicles> {
   List<List<dynamic>> vehicles = [];
 
   void loadVehicleCSV() async {
-    final myVehicles = await rootBundle.loadString('VehicleInfo.csv');
+    final myVehicles = await rootBundle.loadString('assets/VehicleInfo.csv');
     List<List<dynamic>> csvTable = CsvToListConverter().convert(myVehicles);
 
     vehicles = csvTable;
+    print(vehicles);
   }
 
   @override
@@ -52,6 +53,7 @@ class _LoadVehiclesState extends State<LoadVehicles> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Make:', textScaleFactor: 1.1),
+                  Text(vehicles[0][0])
                 ],
               ),
             ),
@@ -61,6 +63,7 @@ class _LoadVehiclesState extends State<LoadVehicles> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Model:', textScaleFactor: 1.1),
+                  Text(vehicles[0][1])
                 ],
               ),
             ),
@@ -70,6 +73,7 @@ class _LoadVehiclesState extends State<LoadVehicles> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Fuel Eco:', textScaleFactor: 1.1),
+                  Text(vehicles[0][2].toString())
                 ],
               ),
             ),
@@ -79,7 +83,7 @@ class _LoadVehiclesState extends State<LoadVehicles> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Plate:', textScaleFactor: 1.1),
-                  Text('test'),
+                  Text(vehicles[0][3]),
                 ],
               ),
             ),
