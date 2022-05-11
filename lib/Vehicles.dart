@@ -5,18 +5,23 @@ import 'dart:ui';
 
 List<List<dynamic>> vehicles = [];
 
-_loadVehicleCSV() async {
-  final myVehicles = await rootBundle.loadString('VehicleInfo.csv');
-  List<List<dynamic>> csvTable = CsvToListConverter().convert(myVehicles);
 
-  vehicles = csvTable;
-}
 
 class LoadVehicles extends StatelessWidget {
   const LoadVehicles({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
+  List<List<dynamic>> vehicles = [];
+
+  _loadVehicleCSV() async {
+  final myVehicles = await rootBundle.loadString('VehicleInfo.csv');
+  List<List<dynamic>> csvTable = CsvToListConverter().convert(myVehicles);
+
+  vehicles = csvTable;
+}
+
     return Center(
       child: Container(
         decoration: BoxDecoration(color: Colors.white),

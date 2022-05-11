@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'Vehicles.dart';
 
 import 'package:flutter/material.dart';
 
@@ -35,6 +36,7 @@ class Settings extends StatelessWidget {
                 'Vehicles',
                 textScaleFactor: 1.5,
               ),
+              LoadVehicles(),
             ],
           ),
         ),
