@@ -3,25 +3,32 @@ import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
 
-List<List<dynamic>> vehicles = [];
-
-
-
-class LoadVehicles extends StatelessWidget {
+class LoadVehicles extends StatefulWidget {
   const LoadVehicles({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-
-  List<List<dynamic>> vehicles = [];
-
-  _loadVehicleCSV() async {
-  final myVehicles = await rootBundle.loadString('VehicleInfo.csv');
-  List<List<dynamic>> csvTable = CsvToListConverter().convert(myVehicles);
-
-  vehicles = csvTable;
+  State<LoadVehicles> createState() => _LoadVehiclesState();
 }
 
+class _LoadVehiclesState extends State<LoadVehicles> {
+  List<List<dynamic>> vehicles = [];
+
+  void loadVehicleCSV() async {
+    final myVehicles = await rootBundle.loadString('assets/VehicleInfo.csv');
+    List<List<dynamic>> csvTable = CsvToListConverter().convert(myVehicles);
+
+    vehicles = csvTable;
+    print(vehicles);
+  }
+
+  @override
+  void initState() {
+    loadVehicleCSV();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Center(
       child: Container(
         decoration: BoxDecoration(color: Colors.white),
@@ -46,6 +53,7 @@ class LoadVehicles extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Make:', textScaleFactor: 1.1),
+                  Text(vehicles[0][0])
                 ],
               ),
             ),
@@ -55,6 +63,7 @@ class LoadVehicles extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Model:', textScaleFactor: 1.1),
+                  Text(vehicles[0][1])
                 ],
               ),
             ),
@@ -64,6 +73,7 @@ class LoadVehicles extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Fuel Eco:', textScaleFactor: 1.1),
+                  Text(vehicles[0][2].toString())
                 ],
               ),
             ),
@@ -73,7 +83,7 @@ class LoadVehicles extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Plate:', textScaleFactor: 1.1),
-                  Text('test'),
+                  Text(vehicles[0][3]),
                 ],
               ),
             ),
@@ -82,8 +92,4 @@ class LoadVehicles extends StatelessWidget {
       ),
     );
   }
-}
-
-_loadVehicles() async {
-  for (int i = 0; i < vehicles.length; i++) {}
 }
