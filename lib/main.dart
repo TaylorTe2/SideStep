@@ -240,15 +240,13 @@ class _MapViewState extends State<MapView> {
     polylines[id] = polyline;
   }
 
+//load vehiclecsv on program launch
+//load _getCurrentLocation on program launch
   @override
   void initState() {
     super.initState();
     _getCurrentLocation();
-  //load vehiclecsv on program launch
-  @override
-  void initState() {
     loadVehicleCSV();
-    super.initState();
   }
 
   @override
