@@ -1,4 +1,4 @@
-#Thu May 12 19:11:53 AEST 2022
-base.0=C\:\\Users\\USER\\Desktop\\Uni\\Building IT Systems\\Assessment 2\\SideStep-1\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+#Thu May 12 20:50:36 AEST 2022
+base.0=D\:\\Taylor\\Uni\\RMIT\\Building_IT_Systems\\Project\\SideStep\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
 renamed.0=classes.dex
 path.0=classes.dex
