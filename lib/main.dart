@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'UserSettings.dart';
+import 'Vehicles.dart';
 
 void main() => runApp(const MyApp());
 
@@ -37,6 +38,13 @@ class _MyAppState extends State<MyApp> {
         ),
       );
     });
+  }
+
+  //load vehiclecsv on program launch
+  @override
+  void initState() {
+    loadVehicleCSV();
+    super.initState();
   }
 
   @override
