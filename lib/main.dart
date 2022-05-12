@@ -6,6 +6,7 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'secrets.dart';
+import 'Vehicles.dart';
 
 void main() {
   runApp(MyApp());
@@ -243,6 +244,11 @@ class _MapViewState extends State<MapView> {
   void initState() {
     super.initState();
     _getCurrentLocation();
+  //load vehiclecsv on program launch
+  @override
+  void initState() {
+    loadVehicleCSV();
+    super.initState();
   }
 
   @override

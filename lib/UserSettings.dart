@@ -3,8 +3,19 @@ import 'Vehicles.dart';
 
 import 'package:flutter/material.dart';
 
-class Settings extends StatelessWidget {
+class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
+
+  @override
+  State<Settings> createState() => _SettingsState();
+}
+
+class _SettingsState extends State<Settings> {
+  @override
+  void initState() {
+    numVehiclesLoaded = -1;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +47,42 @@ class Settings extends StatelessWidget {
                 'Vehicles',
                 textScaleFactor: 1.5,
               ),
-              LoadVehicles(),
+              for (int i = 0; i < vehicles.length; i++) LoadVehicles(),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: SizedBox(
+                      width: 100,
+                      height: 25,
+                      child: FloatingActionButton(
+                        heroTag: 'add Vehicle',
+                        isExtended: true,
+                        onPressed: () => {print('pressed')},
+                        child: Text('Add Vehicle'),
+                        shape: BeveledRectangleBorder(
+                            borderRadius: BorderRadius.circular(2)),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: SizedBox(
+                      width: 150,
+                      height: 25,
+                      child: FloatingActionButton(
+                        heroTag: 'remove vehicle',
+                        isExtended: true,
+                        onPressed: () => {print('pressed')},
+                        child: Text('Remove a Vehicle'),
+                        shape: BeveledRectangleBorder(
+                            borderRadius: BorderRadius.circular(2)),
+                        backgroundColor: Colors.orange[900],
+                      ),
+                    ),
+                  )
+                ],
+              )
             ],
           ),
         ),
@@ -44,7 +90,6 @@ class Settings extends StatelessWidget {
     );
   }
 }
-
 
 class UserInfo extends StatelessWidget {
   const UserInfo({Key? key}) : super(key: key);
@@ -62,12 +107,41 @@ class UserInfo extends StatelessWidget {
             textAlign: TextAlign.left,
           ),
         ),
+        // Here is the information inside of the white box underneath 'Your Info'. This will need
+        // to be updated at a later date to be more dynamic. However, for now this will do just fine.
         Container(
-          //User info goes here.
-
           height: 100,
           width: MediaQuery.of(context).size.width - 20,
           color: Colors.white,
+          child: Row(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                    child: Text('First Name', textScaleFactor: 1.2),
+                  ),
+                  Text('Darkroom'),
+                  Text('________________________'),
+                  Text('Location:   Brisbane', textScaleFactor: 1.2)
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                      child: Text('Last Name', textScaleFactor: 1.2),
+                    ),
+                    Text('Developers'),
+                  ],
+                ),
+              )
+            ],
+          ),
         )
       ],
     );

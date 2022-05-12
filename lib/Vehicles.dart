@@ -3,6 +3,17 @@ import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
 
+List<List<dynamic>> vehicles = [];
+int numVehiclesLoaded = -1;
+
+void loadVehicleCSV() async {
+  final myVehicles = await rootBundle.loadString('assets/VehicleInfo.csv');
+  List<List<dynamic>> csvTable = CsvToListConverter().convert(myVehicles);
+
+  vehicles = csvTable;
+  print(vehicles);
+}
+
 class LoadVehicles extends StatefulWidget {
   const LoadVehicles({Key? key}) : super(key: key);
 
@@ -11,85 +22,108 @@ class LoadVehicles extends StatefulWidget {
 }
 
 class _LoadVehiclesState extends State<LoadVehicles> {
-  List<List<dynamic>> vehicles = [];
-
-  void loadVehicleCSV() async {
-    final myVehicles = await rootBundle.loadString('assets/VehicleInfo.csv');
-    List<List<dynamic>> csvTable = CsvToListConverter().convert(myVehicles);
-
-    vehicles = csvTable;
-    print(vehicles);
-  }
-
   @override
   void initState() {
     loadVehicleCSV();
+    numVehiclesLoaded++;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Container(
-        decoration: BoxDecoration(color: Colors.white),
-        width: MediaQuery.of(context).size.width - 20,
-        height: 100,
-        child: Row(
-          children: [
-            Column(
-              children: [
-                Container(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+        child: Container(
+          decoration: BoxDecoration(color: Colors.white),
+          width: MediaQuery.of(context).size.width - 20,
+          height: 50,
+          child: Row(
+            children: [
+              Column(
+                children: [
+                  Container(
+                    width: 50,
+                    child: Icon(
+                      Icons.car_rental,
+                      size: 40,
+                    ),
+                  ),
+                ],
+              ),
+              //Make Section for each widget built
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                child: Container(
                   width: 50,
-                  child: Icon(
-                    Icons.car_rental,
-                    size: 40,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Make:', textScaleFactor: 1.1),
+                      Text(vehicles[numVehiclesLoaded][0])
+                    ],
                   ),
                 ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Make:', textScaleFactor: 1.1),
-                  Text(vehicles[0][0])
-                ],
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Model:', textScaleFactor: 1.1),
-                  Text(vehicles[0][1])
-                ],
+              // Model Section for each widget built
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                child: Container(
+                  width: 80,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Model:', textScaleFactor: 1.1),
+                      Text(vehicles[numVehiclesLoaded][1])
+                    ],
+                  ),
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Fuel Eco:', textScaleFactor: 1.1),
-                  Text(vehicles[0][2].toString())
-                ],
+              //Fuel Economy UI Section for each widget built
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                child: Container(
+                  width: 65,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Fuel Eco:', textScaleFactor: 1.1),
+                      Text(vehicles[numVehiclesLoaded][2].toString())
+                    ],
+                  ),
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Plate:', textScaleFactor: 1.1),
-                  Text(vehicles[0][3]),
-                ],
+              // Plate Section for each widget built.
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Plate:', textScaleFactor: 1.1),
+                    Text(vehicles[numVehiclesLoaded][3]),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
+  }
+}
+
+// Add Vehicle Class Below this line.
+
+class AddVehicle extends StatefulWidget {
+  const AddVehicle({Key? key}) : super(key: key);
+
+  @override
+  State<AddVehicle> createState() => _AddVehicleState();
+}
+
+class _AddVehicleState extends State<AddVehicle> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }
