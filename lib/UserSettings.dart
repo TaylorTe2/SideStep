@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'Vehicles.dart';
 
 import 'package:flutter/material.dart';
 
@@ -35,7 +36,7 @@ class Settings extends StatelessWidget {
                 'Vehicles',
                 textScaleFactor: 1.5,
               ),
-              MyVehiclesButton(),
+              LoadVehicles(),
             ],
           ),
         ),
@@ -44,46 +45,6 @@ class Settings extends StatelessWidget {
   }
 }
 
-class MyVehiclesButton extends StatelessWidget {
-  const MyVehiclesButton({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      child: Container(
-        height: 50,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(color: Colors.grey.shade300),
-          ),
-        ),
-        child: Row(
-          children: [
-            Icon(
-              Icons.car_rental,
-              size: 40,
-            ),
-            Center(
-              child: Text(
-                'My Vehicles',
-                textAlign: TextAlign.center,
-                textScaleFactor: 1.1,
-              ),
-            ),
-          ],
-        ),
-      ),
-      onTap: () {
-        print("tapped");
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const UserVehicles()),
-        );
-      },
-    );
-  }
-}
 
 class UserInfo extends StatelessWidget {
   const UserInfo({Key? key}) : super(key: key);
@@ -109,37 +70,6 @@ class UserInfo extends StatelessWidget {
           color: Colors.white,
         )
       ],
-    );
-  }
-}
-
-class UserVehicles extends StatelessWidget {
-  const UserVehicles({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('My Vehicles'),
-        backgroundColor: Colors.orange,
-      ),
-      body: Column(
-        children: [
-          Container(
-            height: 180.0,
-            decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(color: Colors.grey.shade300)),
-            ),
-            child: Center(
-              child: Text(
-                'Vehicle information placeholder',
-                textAlign: TextAlign.center,
-                textScaleFactor: 1.1,
-              ),
-            ),
-          )
-        ],
-      ),
     );
   }
 }

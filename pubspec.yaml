@@ -38,6 +38,7 @@ dependencies:
   flutter_polyline_points: ^1.0.0
   google_maps_webservice: ^0.0.19
   async: ^2.8.2
+  csv: ^5.0.1
 
   
 
