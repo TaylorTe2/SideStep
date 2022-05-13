@@ -70,6 +70,8 @@ class _MapViewState extends State<MapView> {
   }
 
   void _setPolyline(List<PointLatLng> points) {
+    //remove existing polylines
+    _polyline.clear();
     final String polylineIdVal = 'polygon_$_polygonIdCounter';
     _polygonIdCounter++;
 
