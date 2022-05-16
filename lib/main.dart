@@ -5,6 +5,8 @@ import 'UserSettings.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 import 'secrets.dart';
 import 'Vehicles.dart';
 import 'location_service.dart';
@@ -53,10 +55,36 @@ class _MapViewState extends State<MapView> {
   static final CameraPosition _mainLocation =
       CameraPosition(target: LatLng(-27.4705, 153.0260), zoom: 14.4746);
 
+  //BELOW HERE WILL CREATE A CSV ON THE LOCAL SYSTEM FOR THE USER VEHICLES TO BE
+  //STORED IN IF IT ISN'T ALREADY CREATED.
+
+  // gets csv location, creates the csv if it doesn't exist
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+
+    return directory.path;
+  }
+
+//gets the exact file location of said device
+  Future<File> get _localFile async {
+    final path = await _localPath;
+    return File('$path/VehicleInfo.csv');
+  }
+
+//write dummy data to file
+  void createCSV() async {
+    final file = await _localFile;
+
+    if (!file.existsSync()) {
+      file.create();
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     _getCurrentLocation();
+    createCSV();
     loadVehicleCSV();
     _setMarker(LatLng(-27.4705, 153.0260));
   }

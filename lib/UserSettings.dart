@@ -3,6 +3,23 @@ import 'Vehicles.dart';
 
 import 'package:flutter/material.dart';
 
+int numVehiclesLoaded = -1;
+int numVehiclesToLoad = -1;
+
+class LoadSettings extends StatefulWidget {
+  const LoadSettings({Key? key}) : super(key: key);
+
+  @override
+  State<LoadSettings> createState() => _LoadSettingsState();
+}
+
+class _LoadSettingsState extends State<LoadSettings> {
+  @override
+  Widget build(BuildContext context) {
+    return Settings();
+  }
+}
+
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
 
@@ -13,8 +30,13 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   @override
   void initState() {
-    numVehiclesLoaded = -1;
     super.initState();
+    vehicles = newVehicles;
+    numVehiclesLoaded = -1;
+    print(numVehiclesLoaded.toString() +
+        ' << NumVehiclesLoaded in USERSETTINGS.');
+    print(vehicles);
+    print('Above was UserSettings.dart');
   }
 
   @override
@@ -47,7 +69,8 @@ class _SettingsState extends State<Settings> {
                 'Vehicles',
                 textScaleFactor: 1.5,
               ),
-              for (int i = 0; i < vehicles.length; i++) LoadVehicles(),
+              for (var vehicle in vehicles)
+                if (numVehiclesLoaded < vehicles.length) LoadVehicles(),
               Row(
                 children: [
                   Padding(
@@ -58,7 +81,12 @@ class _SettingsState extends State<Settings> {
                       child: FloatingActionButton(
                         heroTag: 'add Vehicle',
                         isExtended: true,
-                        onPressed: () => {print('pressed')},
+                        onPressed: () => {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: ((context) => const AddVehicle())))
+                        },
                         child: Text('Add Vehicle'),
                         shape: BeveledRectangleBorder(
                             borderRadius: BorderRadius.circular(2)),
@@ -73,7 +101,7 @@ class _SettingsState extends State<Settings> {
                       child: FloatingActionButton(
                         heroTag: 'remove vehicle',
                         isExtended: true,
-                        onPressed: () => {print('pressed')},
+                        onPressed: () => {print('pressed remove vehicle')},
                         child: Text('Remove a Vehicle'),
                         shape: BeveledRectangleBorder(
                             borderRadius: BorderRadius.circular(2)),
