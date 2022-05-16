@@ -39,6 +39,8 @@ dependencies:
   google_maps_webservice: ^0.0.19
   async: ^2.8.2
   csv: ^5.0.1
+  get_storage: ^2.0.3
+  path_provider: ^2.0.10
 
   
 

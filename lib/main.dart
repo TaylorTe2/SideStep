@@ -5,8 +5,11 @@ import 'UserSettings.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 import 'secrets.dart';
 import 'Vehicles.dart';
+import 'location_service.dart';
 
 void main() {
   runApp(MyApp());
@@ -31,6 +34,97 @@ class MapView extends StatefulWidget {
 }
 
 class _MapViewState extends State<MapView> {
+  //Alex Vars
+  Completer<GoogleMapController> _controller = Completer();
+
+  //Text Input Controllers
+  TextEditingController _originController = TextEditingController();
+  TextEditingController _destinationController = TextEditingController();
+
+  // Sets / Lists containing map elements
+  Set<Marker> _markers = Set<Marker>();
+  Set<Polygon> _polygons = Set<Polygon>();
+  Set<Polyline> _polyline = Set<Polyline>();
+  List<LatLng> polygonLatLngs = <LatLng>[];
+
+  // Used to provide unique names for polyline segments
+  int _polygonIdCounter = 0;
+  int _polylineIdCounter = 0;
+
+  // Map Starting Location (Brisbane)
+  static final CameraPosition _mainLocation =
+      CameraPosition(target: LatLng(-27.4705, 153.0260), zoom: 14.4746);
+
+  //BELOW HERE WILL CREATE A CSV ON THE LOCAL SYSTEM FOR THE USER VEHICLES TO BE
+  //STORED IN IF IT ISN'T ALREADY CREATED.
+
+  // gets csv location, creates the csv if it doesn't exist
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+
+    return directory.path;
+  }
+
+//gets the exact file location of said device
+  Future<File> get _localFile async {
+    final path = await _localPath;
+    return File('$path/VehicleInfo.csv');
+  }
+
+//write dummy data to file
+  void createCSV() async {
+    final file = await _localFile;
+
+    if (!file.existsSync()) {
+      file.create();
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+    createCSV();
+    loadVehicleCSV();
+    _setMarker(LatLng(-27.4705, 153.0260));
+  }
+
+  void _setMarker(LatLng point) {
+    setState(() {
+      _markers.add(
+        Marker(markerId: MarkerId('marker'), position: point),
+      );
+    });
+  }
+
+  void _setPolyline(List<PointLatLng> points) {
+    final String polylineIdVal = 'polygon_$_polygonIdCounter';
+    _polygonIdCounter++;
+
+    _polyline.add(Polyline(
+      polylineId: PolylineId(polylineIdVal),
+      width: 5,
+      color: Colors.orange,
+      points: points
+          .map(
+            (point) => LatLng(point.latitude, point.longitude),
+          )
+          .toList(),
+    ));
+  }
+
+  void _setPolygon() {
+    final String polygonIdVal = 'polygon_$_polygonIdCounter';
+    _polygonIdCounter++;
+
+    _polygons.add(Polygon(
+        polygonId: PolygonId(polygonIdVal),
+        points: polygonLatLngs,
+        strokeWidth: 2,
+        fillColor: Colors.transparent));
+  }
+  //End Alexs Vars
+
   //default starting position on map when the app is run. We should change this to device location in the future.
   CameraPosition _initialLocation =
       CameraPosition(target: LatLng(-27.4705, 153.0260), zoom: 15.0);
@@ -209,43 +303,43 @@ class _MapViewState extends State<MapView> {
     return false;
   }
 
-  //Polylines
-  _createPolylines(
-    double startLatitude,
-    double startLongitude,
-    double destinationLatitude,
-    double destinationLongitude,
-  ) async {
-    polylinePoints = PolylinePoints();
-    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      Secrets.API_KEY,
-      PointLatLng(startLatitude, startLongitude),
-      PointLatLng(destinationLatitude, destinationLongitude),
-      travelMode: TravelMode.driving,
-    );
+  // //Polylines
+  // _createPolylines(
+  //   double startLatitude,
+  //   double startLongitude,
+  //   double destinationLatitude,
+  //   double destinationLongitude,
+  // ) async {
+  //   polylinePoints = PolylinePoints();
+  //   PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+  //     Secrets.API_KEY,
+  //     PointLatLng(startLatitude, startLongitude),
+  //     PointLatLng(destinationLatitude, destinationLongitude),
+  //     travelMode: TravelMode.driving,
+  //   );
 
-    if (result.points.isNotEmpty) {
-      result.points.forEach((PointLatLng point) {
-        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-      });
-    }
+  //   if (result.points.isNotEmpty) {
+  //     result.points.forEach((PointLatLng point) {
+  //       polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+  //     });
+  //   }
 
-    PolylineId id = PolylineId('poly');
-    Polyline polyline = Polyline(
-      polylineId: id,
-      color: Colors.green.shade600,
-      points: polylineCoordinates,
-      width: 3,
-    );
-    polylines[id] = polyline;
-  }
+  //   PolylineId id = PolylineId('poly');
+  //   Polyline polyline = Polyline(
+  //     polylineId: id,
+  //     color: Colors.green.shade600,
+  //     points: polylineCoordinates,
+  //     width: 3,
+  //   );
+  //   polylines[id] = polyline;
+  // }
 
-  @override
-  void initState() {
-    super.initState();
-    _getCurrentLocation();
-    loadVehicleCSV();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _getCurrentLocation();
+  //   loadVehicleCSV();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -261,17 +355,13 @@ class _MapViewState extends State<MapView> {
         body: Stack(
           children: <Widget>[
             GoogleMap(
-              markers: Set<Marker>.from(markers),
-              initialCameraPosition: _initialLocation,
-              myLocationEnabled: true,
-              myLocationButtonEnabled: false,
-              compassEnabled: true,
-              zoomControlsEnabled: false,
-              zoomGesturesEnabled: true,
               mapType: MapType.normal,
-              polylines: Set<Polyline>.of(polylines.values),
+              markers: _markers,
+              polygons: _polygons,
+              polylines: _polyline,
+              initialCameraPosition: _mainLocation,
               onMapCreated: (GoogleMapController controller) {
-                mapController = controller;
+                _controller.complete(controller);
               },
             ),
             //Address input fields at top of screen
@@ -310,7 +400,7 @@ class _MapViewState extends State<MapView> {
                                   _startAddress = _currentAddress;
                                 },
                               ),
-                              controller: startAddressController,
+                              controller: _originController,
                               focusNode: startAddressFocusNode,
                               width: width,
                               locationCallback: (String value) {
@@ -323,7 +413,7 @@ class _MapViewState extends State<MapView> {
                               label: 'Destination',
                               hint: 'Choose destination',
                               prefixIcon: Icon(Icons.looks_two),
-                              controller: destinationAddressController,
+                              controller: _destinationController,
                               focusNode: destinationAddressFocusNode,
                               width: width,
                               locationCallback: (String value) {
@@ -333,21 +423,19 @@ class _MapViewState extends State<MapView> {
                               }),
                           SizedBox(height: 5),
                           ElevatedButton(
-                            onPressed: (_startAddress != '' &&
-                                    _destinationAddress != '')
-                                ? () async {
-                                    startAddressFocusNode.unfocus();
-                                    destinationAddressFocusNode.unfocus();
-                                    setState(() {
-                                      if (markers.isNotEmpty) markers.clear();
-                                      if (polylines.isNotEmpty)
-                                        polylines.clear();
-                                      if (polylineCoordinates.isNotEmpty)
-                                        polylineCoordinates.clear();
-                                      _placeDistance = null;
-                                    });
-                                  }
-                                : null,
+                            onPressed: (() async {
+                              var directions = await LocationService()
+                                  .getDirections(_originController.text,
+                                      _destinationController.text);
+
+                              _goToPlace(
+                                directions['start_location']['lat'],
+                                directions['start_location']['lng'],
+                                directions['bounds_ne'],
+                                directions['bounds_sw'],
+                              );
+                              _setPolyline(directions['polyline_decoded']);
+                            }),
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
@@ -434,5 +522,21 @@ class _MapViewState extends State<MapView> {
         ),
       ),
     );
+  }
+
+  Future<void> _goToPlace(double lat, double lng, Map<String, dynamic> boundsNe,
+      Map<String, dynamic> boundsSw) async {
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(
+      CameraPosition(target: LatLng(lat, lng), zoom: 12),
+    ));
+
+    controller.animateCamera(CameraUpdate.newLatLngBounds(
+        LatLngBounds(
+            southwest: LatLng(boundsSw['lat'], boundsSw['lng']),
+            northeast: LatLng(boundsNe['lat'], boundsNe['lng'])),
+        25));
+
+    _setMarker(LatLng(lat, lng));
   }
 }
