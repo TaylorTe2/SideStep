@@ -86,6 +86,7 @@ class _MapViewState extends State<MapView> {
     _getCurrentLocation();
     createCSV();
     loadVehicleCSV();
+
     _setMarker(LatLng(-27.4705, 153.0260));
   }
 
@@ -97,15 +98,65 @@ class _MapViewState extends State<MapView> {
     });
   }
 
-  void _setPolyline(List<PointLatLng> points) {
-    final String polylineIdVal = 'polygon_$_polygonIdCounter';
+  void _setPolyline(
+      List<PointLatLng> pointsFastest,
+      List<PointLatLng> pointsNoTolls,
+      List<PointLatLng> pointsFlexi1,
+      List<PointLatLng> pointsFlexi2) {
+    //Fastest Route
+    final String polylineIdValFastest = 'polygon_$_polygonIdCounter';
     _polygonIdCounter++;
 
     _polyline.add(Polyline(
-      polylineId: PolylineId(polylineIdVal),
+      polylineId: PolylineId(polylineIdValFastest),
+      width: 6,
+      color: Color.fromARGB(255, 0, 255, 42),
+      points: pointsFastest
+          .map(
+            (point) => LatLng(point.latitude, point.longitude),
+          )
+          .toList(),
+    ));
+
+    //No Tolls
+    final String polylineIdValNoToll = 'polygon_$_polygonIdCounter';
+    _polygonIdCounter++;
+
+    _polyline.add(Polyline(
+      polylineId: PolylineId(polylineIdValNoToll),
       width: 5,
-      color: Colors.orange,
-      points: points
+      color: Color.fromARGB(255, 1, 97, 240),
+      points: pointsNoTolls
+          .map(
+            (point) => LatLng(point.latitude, point.longitude),
+          )
+          .toList(),
+    ));
+
+    //Flexi 1
+    final String polylineIdValFlexi1 = 'polygon_$_polygonIdCounter';
+    _polygonIdCounter++;
+
+    _polyline.add(Polyline(
+      polylineId: PolylineId(polylineIdValFlexi1),
+      width: 4,
+      color: Color.fromARGB(255, 252, 71, 0),
+      points: pointsFlexi1
+          .map(
+            (point) => LatLng(point.latitude, point.longitude),
+          )
+          .toList(),
+    ));
+
+    //Flexi 2
+    final String polylineIdValFlexi2 = 'polygon_$_polygonIdCounter';
+    _polygonIdCounter++;
+
+    _polyline.add(Polyline(
+      polylineId: PolylineId(polylineIdValFlexi2),
+      width: 4,
+      color: Color.fromARGB(255, 252, 71, 0),
+      points: pointsFlexi2
           .map(
             (point) => LatLng(point.latitude, point.longitude),
           )
@@ -362,6 +413,7 @@ class _MapViewState extends State<MapView> {
               initialCameraPosition: _mainLocation,
               onMapCreated: (GoogleMapController controller) {
                 _controller.complete(controller);
+                controller.setMapStyle(Secrets.mapStyle);
               },
             ),
             //Address input fields at top of screen
@@ -424,17 +476,23 @@ class _MapViewState extends State<MapView> {
                           SizedBox(height: 5),
                           ElevatedButton(
                             onPressed: (() async {
+                              //remove existing polylines
+                              _polyline.clear();
                               var directions = await LocationService()
                                   .getDirections(_originController.text,
                                       _destinationController.text);
-
                               _goToPlace(
                                 directions['start_location']['lat'],
                                 directions['start_location']['lng'],
                                 directions['bounds_ne'],
                                 directions['bounds_sw'],
                               );
-                              _setPolyline(directions['polyline_decoded']);
+
+                              _setPolyline(
+                                  directions['polyline_decoded_fastest'],
+                                  directions['polyline_decoded_noToll'],
+                                  directions['polyline_decoded_flexi1'],
+                                  directions['polyline_decoded_flexi2']);
                             }),
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
