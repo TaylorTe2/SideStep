@@ -35,6 +35,24 @@ class MapView extends StatefulWidget {
 
 class _MapViewState extends State<MapView> {
   //Alex Vars
+
+  bool uiElements1 = true;
+  bool uiElements2 = false;
+
+  var fastestDuration;
+  var fastestDistance;
+  var fastestPetrolCost;
+  var noTollDuration;
+  var noTollDistance;
+
+  //Flexi require extra fields for processing.
+  var noTollPetrolCost;
+  var flexiDuration;
+  String flexiDurationText = "";
+  double flexiDistance = 0;
+  String flexiDistanceText = "";
+  var flexiDistanceCost;
+
   Completer<GoogleMapController> _controller = Completer();
 
   //Text Input Controllers
@@ -248,6 +266,35 @@ class _MapViewState extends State<MapView> {
     );
   }
 
+  calculatePetrolCost(double distance) {
+    // Find No. of 100Km intervals
+    distance = distance / 1000;
+
+    distance = distance / 100;
+    // Fuel useage Liters = 100Km intervals * Car Pertrol usage perf 100kms
+    distance = distance * 10.0;
+    // Petrol Cost = Liters * pertrol Price
+    distance = distance * 2.11;
+    //round 2 decimal places
+    distance = double.parse((distance).toStringAsFixed(2));
+    return distance;
+  }
+
+  String intToTime(int value) {
+    int h, m, s;
+    h = value ~/ 3600;
+    m = ((value - h * 3600)) ~/ 60;
+    s = value - (h * 3600) - (m * 60);
+    String hourLeft =
+        h.toString().length < 2 ? "0" + h.toString() : h.toString();
+    String minuteLeft =
+        m.toString().length < 2 ? "0" + m.toString() : m.toString();
+    String secondsLeft =
+        s.toString().length < 2 ? "0" + s.toString() : s.toString();
+    String result = "$hourLeft hours $minuteLeft mins";
+    return result;
+  }
+
   //Method to get current location
   _getCurrentLocation() async {
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
@@ -354,44 +401,6 @@ class _MapViewState extends State<MapView> {
     return false;
   }
 
-  // //Polylines
-  // _createPolylines(
-  //   double startLatitude,
-  //   double startLongitude,
-  //   double destinationLatitude,
-  //   double destinationLongitude,
-  // ) async {
-  //   polylinePoints = PolylinePoints();
-  //   PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-  //     Secrets.API_KEY,
-  //     PointLatLng(startLatitude, startLongitude),
-  //     PointLatLng(destinationLatitude, destinationLongitude),
-  //     travelMode: TravelMode.driving,
-  //   );
-
-  //   if (result.points.isNotEmpty) {
-  //     result.points.forEach((PointLatLng point) {
-  //       polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-  //     });
-  //   }
-
-  //   PolylineId id = PolylineId('poly');
-  //   Polyline polyline = Polyline(
-  //     polylineId: id,
-  //     color: Colors.green.shade600,
-  //     points: polylineCoordinates,
-  //     width: 3,
-  //   );
-  //   polylines[id] = polyline;
-  // }
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _getCurrentLocation();
-  //   loadVehicleCSV();
-  // }
-
   @override
   Widget build(BuildContext context) {
     //these 2 lines adjust the size of the app as the user changes orientation on their phone
@@ -413,7 +422,7 @@ class _MapViewState extends State<MapView> {
               initialCameraPosition: _mainLocation,
               onMapCreated: (GoogleMapController controller) {
                 _controller.complete(controller);
-                controller.setMapStyle(Secrets.mapStyle);
+                //controller.setMapStyle(Secrets.mapStyle);
               },
             ),
             //Address input fields at top of screen
@@ -440,77 +449,233 @@ class _MapViewState extends State<MapView> {
                             style: TextStyle(fontSize: 20.0),
                           ),
                           SizedBox(height: 10),
-                          _textField(
-                              label: 'Start',
-                              hint: 'Choose Starting Address',
-                              prefixIcon: Icon(Icons.looks_one),
-                              suffixIcon: IconButton(
-                                icon: Icon(Icons.my_location_rounded),
-                                //Stores User entered info to be used with routing
-                                onPressed: () {
-                                  startAddressController.text = _currentAddress;
-                                  _startAddress = _currentAddress;
-                                },
-                              ),
-                              controller: _originController,
-                              focusNode: startAddressFocusNode,
-                              width: width,
-                              locationCallback: (String value) {
-                                setState(() {
-                                  _startAddress = value;
-                                });
-                              }),
+                          //VISABLITY
+                          if (uiElements1)
+                            _textField(
+                                label: 'Start',
+                                hint: 'Choose Starting Address',
+                                prefixIcon: Icon(Icons.looks_one),
+                                suffixIcon: IconButton(
+                                  icon: Icon(Icons.my_location_rounded),
+                                  //Stores User entered info to be used with routing
+                                  onPressed: () {
+                                    startAddressController.text =
+                                        _currentAddress;
+                                    _startAddress = _currentAddress;
+                                  },
+                                ),
+                                controller: _originController,
+                                focusNode: startAddressFocusNode,
+                                width: width,
+                                locationCallback: (String value) {
+                                  setState(() {
+                                    _startAddress = value;
+                                  });
+                                }),
                           SizedBox(height: 10),
-                          _textField(
-                              label: 'Destination',
-                              hint: 'Choose destination',
-                              prefixIcon: Icon(Icons.looks_two),
-                              controller: _destinationController,
-                              focusNode: destinationAddressFocusNode,
-                              width: width,
-                              locationCallback: (String value) {
-                                setState(() {
-                                  _destinationAddress = value;
-                                });
-                              }),
+                          //VISABLITY
+                          if (uiElements1)
+                            _textField(
+                                label: 'Destination',
+                                hint: 'Choose destination',
+                                prefixIcon: Icon(Icons.looks_two),
+                                controller: _destinationController,
+                                focusNode: destinationAddressFocusNode,
+                                width: width,
+                                locationCallback: (String value) {
+                                  setState(() {
+                                    _destinationAddress = value;
+                                  });
+                                }),
                           SizedBox(height: 5),
-                          ElevatedButton(
-                            onPressed: (() async {
-                              //remove existing polylines
-                              _polyline.clear();
-                              var directions = await LocationService()
-                                  .getDirections(_originController.text,
-                                      _destinationController.text);
-                              _goToPlace(
-                                directions['start_location']['lat'],
-                                directions['start_location']['lng'],
-                                directions['bounds_ne'],
-                                directions['bounds_sw'],
-                              );
+                          //VISABLITY
+                          if (uiElements1)
+                            ElevatedButton(
+                              onPressed: (() async {
+                                uiElements2 = true;
+                                uiElements1 = false;
+                                //remove existing polylines
+                                _polyline.clear();
+                                var directions = await LocationService()
+                                    .getDirections(_originController.text,
+                                        _destinationController.text);
 
-                              _setPolyline(
-                                  directions['polyline_decoded_fastest'],
-                                  directions['polyline_decoded_noToll'],
-                                  directions['polyline_decoded_flexi1'],
-                                  directions['polyline_decoded_flexi2']);
-                            }),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'Show Routing Options',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20.0,
+                                fastestDuration =
+                                    directions['fastest_duration'];
+                                fastestDistance =
+                                    directions['fastest_distance'];
+                                fastestPetrolCost = calculatePetrolCost(
+                                    directions['fastest_distance_val']
+                                        .toDouble());
+                                noTollDuration = directions['noToll_duration'];
+                                noTollDistance = directions['noToll_distance'];
+                                noTollPetrolCost = calculatePetrolCost(
+                                    directions['noToll_distance_val']
+                                        .toDouble());
+
+                                flexiDuration = directions['flexi1_duration'] +
+                                    directions['flexi2_duration'];
+                                flexiDurationText = intToTime(flexiDuration);
+                                flexiDistance = (directions['flexi1_distance'] +
+                                        directions['flexi2_distance'])
+                                    .toDouble();
+                                flexiDistance = flexiDistance / 1000;
+                                flexiDistanceText =
+                                    flexiDistance.toStringAsFixed(0);
+
+                                var flexiDistanceTotal =
+                                    directions['flexi1_distance'] +
+                                        directions['flexi2_distance'];
+                                flexiDistanceCost = calculatePetrolCost(
+                                    flexiDistanceTotal.toDouble());
+
+                                _goToPlace(
+                                  directions['start_location']['lat'],
+                                  directions['start_location']['lng'],
+                                  directions['bounds_ne'],
+                                  directions['bounds_sw'],
+                                );
+
+                                _setPolyline(
+                                    directions['polyline_decoded_fastest'],
+                                    directions['polyline_decoded_noToll'],
+                                    directions['polyline_decoded_flexi1'],
+                                    directions['polyline_decoded_flexi2']);
+                              }),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  'Show Routing Options',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20.0,
+                                  ),
+                                ),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.orange.shade600,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
                                 ),
                               ),
                             ),
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.orange.shade600,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
+                          if (uiElements2)
+                            ElevatedButton(
+                              onPressed: (() async {
+                                //remove existing polylines
+                                _polyline.clear();
+                                var directions = await LocationService()
+                                    .getDirections(_originController.text,
+                                        _destinationController.text);
+
+                                _goToPlace(
+                                  directions['start_location']['lat'],
+                                  directions['start_location']['lng'],
+                                  directions['bounds_ne'],
+                                  directions['bounds_sw'],
+                                );
+
+                                _setPolyline(
+                                    directions['polyline_decoded_fastest'],
+                                    directions['polyline_decoded_noToll'],
+                                    directions['polyline_decoded_flexi1'],
+                                    directions['polyline_decoded_flexi2']);
+                              }),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  'Fastest Route: \n$fastestDuration, $fastestDistance, \$$fastestPetrolCost',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.orange.shade600,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
                               ),
                             ),
-                          ),
+                          if (uiElements2) SizedBox(height: 10),
+                          if (uiElements2)
+                            ElevatedButton(
+                              onPressed: (() async {
+                                //remove existing polylines
+                                _polyline.clear();
+                                var directions = await LocationService()
+                                    .getDirections(_originController.text,
+                                        _destinationController.text);
+                                _goToPlace(
+                                  directions['start_location']['lat'],
+                                  directions['start_location']['lng'],
+                                  directions['bounds_ne'],
+                                  directions['bounds_sw'],
+                                );
+
+                                _setPolyline(
+                                    directions['polyline_decoded_fastest'],
+                                    directions['polyline_decoded_noToll'],
+                                    directions['polyline_decoded_flexi1'],
+                                    directions['polyline_decoded_flexi2']);
+                              }),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  'Cheapest Route: \n$noTollDuration, $noTollDistance, \$$noTollPetrolCost',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.orange.shade600,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                              ),
+                            ),
+                          if (uiElements2) SizedBox(height: 10),
+                          if (uiElements2)
+                            ElevatedButton(
+                              onPressed: (() async {
+                                //remove existing polylines
+                                _polyline.clear();
+                                var directions = await LocationService()
+                                    .getDirections(_originController.text,
+                                        _destinationController.text);
+                                _goToPlace(
+                                  directions['start_location']['lat'],
+                                  directions['start_location']['lng'],
+                                  directions['bounds_ne'],
+                                  directions['bounds_sw'],
+                                );
+
+                                _setPolyline(
+                                    directions['polyline_decoded_fastest'],
+                                    directions['polyline_decoded_noToll'],
+                                    directions['polyline_decoded_flexi1'],
+                                    directions['polyline_decoded_flexi2']);
+                              }),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  'Flexible Route: \n$flexiDurationText, $flexiDistanceText km, \$$flexiDistanceCost',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.orange.shade600,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                              ),
+                            )
                         ],
                       ),
                     ),
