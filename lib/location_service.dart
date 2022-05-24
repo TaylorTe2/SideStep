@@ -78,8 +78,6 @@ class LocationService {
     var jsonFlexi1 = convert.jsonDecode(responseflexi1.body);
     var jsonFlexi2 = convert.jsonDecode(responseflexi2.body);
 
-    print("JSON GOOD!");
-
     var results = {
       'bounds_ne': jsonFastest['routes'][0]['bounds']['northeast'],
       'bounds_sw': jsonFastest['routes'][0]['bounds']['southwest'],
@@ -94,6 +92,24 @@ class LocationService {
           jsonFlexi1['routes'][0]['overview_polyline']['points']),
       'polyline_decoded_flexi2': PolylinePoints().decodePolyline(
           jsonFlexi2['routes'][0]['overview_polyline']['points']),
+      'fastest_duration': jsonFastest['routes'][0]['legs'][0]['duration']
+          ['text'],
+      'fastest_distance': jsonFastest['routes'][0]['legs'][0]['distance']
+          ['text'],
+      'fastest_distance_val': jsonFastest['routes'][0]['legs'][0]['distance']
+          ['value'],
+      'noToll_duration': jsonNoToll['routes'][0]['legs'][0]['duration']['text'],
+      'noToll_distance': jsonNoToll['routes'][0]['legs'][0]['distance']['text'],
+      'noToll_distance_val': jsonNoToll['routes'][0]['legs'][0]['distance']
+          ['value'],
+      'flexi1_duration': jsonFlexi1['routes'][0]['legs'][0]['duration']
+          ['value'],
+      'flexi1_distance': jsonFlexi1['routes'][0]['legs'][0]['distance']
+          ['value'],
+      'flexi2_duration': jsonFlexi2['routes'][0]['legs'][0]['duration']
+          ['value'],
+      'flexi2_distance': jsonFlexi2['routes'][0]['legs'][0]['distance']
+          ['value'],
     };
     print("results sent!");
     return results;
