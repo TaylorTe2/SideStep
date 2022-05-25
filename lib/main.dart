@@ -88,6 +88,69 @@ class _MapViewState extends State<MapView> {
     });
   }
 
+  void _setPolylineSingle(List<PointLatLng> points, int colorNo) {
+    //Fastest Route
+    final String polylineIdValFastest = 'polygon_$_polygonIdCounter';
+    _polygonIdCounter++;
+
+    if (colorNo == 1) {
+      _polyline.add(Polyline(
+        polylineId: PolylineId(polylineIdValFastest),
+        width: 6,
+        color: Color.fromARGB(255, 0, 255, 42),
+        points: points
+            .map(
+              (point) => LatLng(point.latitude, point.longitude),
+            )
+            .toList(),
+      ));
+    } else if (colorNo == 2) {
+      _polyline.add(Polyline(
+        polylineId: PolylineId(polylineIdValFastest),
+        width: 6,
+        color: Color.fromARGB(255, 1, 97, 240),
+        points: points
+            .map(
+              (point) => LatLng(point.latitude, point.longitude),
+            )
+            .toList(),
+      ));
+    }
+  }
+
+  _setPolylineSingleFlexi(
+      List<PointLatLng> pointsFlexi1, List<PointLatLng> pointsFlexi2) {
+    //Flexi 1
+    final String polylineIdValFlexi1 = 'polygon_$_polygonIdCounter';
+    _polygonIdCounter++;
+
+    _polyline.add(Polyline(
+      polylineId: PolylineId(polylineIdValFlexi1),
+      width: 4,
+      color: Color.fromARGB(255, 252, 71, 0),
+      points: pointsFlexi1
+          .map(
+            (point) => LatLng(point.latitude, point.longitude),
+          )
+          .toList(),
+    ));
+
+    //Flexi 2
+    final String polylineIdValFlexi2 = 'polygon_$_polygonIdCounter';
+    _polygonIdCounter++;
+
+    _polyline.add(Polyline(
+      polylineId: PolylineId(polylineIdValFlexi2),
+      width: 4,
+      color: Color.fromARGB(255, 252, 71, 0),
+      points: pointsFlexi2
+          .map(
+            (point) => LatLng(point.latitude, point.longitude),
+          )
+          .toList(),
+    ));
+  }
+
   void _setPolyline(
       List<PointLatLng> pointsFastest,
       List<PointLatLng> pointsNoTolls,
@@ -479,6 +542,8 @@ class _MapViewState extends State<MapView> {
                                 fastestPetrolCost = calculatePetrolCost(
                                     directions['fastest_distance_val']
                                         .toDouble());
+                                // Add Tolls
+                                fastestPetrolCost = fastestPetrolCost + 14.55;
                                 noTollDuration = directions['noToll_duration'];
                                 noTollDistance = directions['noToll_distance'];
                                 noTollPetrolCost = calculatePetrolCost(
@@ -547,11 +612,8 @@ class _MapViewState extends State<MapView> {
                                   directions['bounds_sw'],
                                 );
 
-                                _setPolyline(
-                                    directions['polyline_decoded_fastest'],
-                                    directions['polyline_decoded_noToll'],
-                                    directions['polyline_decoded_flexi1'],
-                                    directions['polyline_decoded_flexi2']);
+                                _setPolylineSingle(
+                                    directions['polyline_decoded_fastest'], 1);
                               }),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
@@ -564,6 +626,7 @@ class _MapViewState extends State<MapView> {
                                 ),
                               ),
                               style: ElevatedButton.styleFrom(
+                                fixedSize: Size(width * 0.8, 80),
                                 primary: Colors.orange.shade600,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20.0),
@@ -585,12 +648,8 @@ class _MapViewState extends State<MapView> {
                                   directions['bounds_ne'],
                                   directions['bounds_sw'],
                                 );
-
-                                _setPolyline(
-                                    directions['polyline_decoded_fastest'],
-                                    directions['polyline_decoded_noToll'],
-                                    directions['polyline_decoded_flexi1'],
-                                    directions['polyline_decoded_flexi2']);
+                                _setPolylineSingle(
+                                    directions['polyline_decoded_noToll'], 2);
                               }),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
@@ -603,6 +662,7 @@ class _MapViewState extends State<MapView> {
                                 ),
                               ),
                               style: ElevatedButton.styleFrom(
+                                fixedSize: Size(width * 0.8, 80),
                                 primary: Colors.orange.shade600,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20.0),
@@ -624,10 +684,7 @@ class _MapViewState extends State<MapView> {
                                   directions['bounds_ne'],
                                   directions['bounds_sw'],
                                 );
-
-                                _setPolyline(
-                                    directions['polyline_decoded_fastest'],
-                                    directions['polyline_decoded_noToll'],
+                                _setPolylineSingleFlexi(
                                     directions['polyline_decoded_flexi1'],
                                     directions['polyline_decoded_flexi2']);
                               }),
@@ -642,6 +699,7 @@ class _MapViewState extends State<MapView> {
                                 ),
                               ),
                               style: ElevatedButton.styleFrom(
+                                fixedSize: Size(width * 0.8, 80),
                                 primary: Colors.orange.shade600,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20.0),
